@@ -22,7 +22,7 @@
  " hello there"
 
 # XXX: review
-(varfn skip-whitespace-forward
+(varfn skip-whitespace-forward-on-line
   ``
   Skips forward while there is whitespace but stop
   if end of line is reached.
@@ -51,7 +51,7 @@
     nil
     (gb/move-n gb (- target-i start-i))))
 
-(varfn skip-whitespace-backward
+(varfn skip-whitespace-backward-on-line
   ``
   Skips backward while there is whitespace but stop
   before previous end of line if any.
@@ -85,7 +85,7 @@
 
   # XXX: does this cover all cases?
   (unless (= start-i target-i)
-    (gb/move-n gb (inc diff))))
+    (gb/move-n gb diff)))
 
 (varfn single-space
   [gb]
@@ -93,9 +93,8 @@
   # find bounds for potential deletion
   (def [start end]
     (do
-      (skip-whitespace-backward gb)
+      (skip-whitespace-backward-on-line gb)
       (def start
-        # XXX: awkward because of how skip-whitespace-backward works?
         (let [here (point gb)
               left (dec here)
               char-left (char-after gb left)]
@@ -104,7 +103,7 @@
             left
             here)))
       (goto-char gb current)
-      (skip-whitespace-forward gb)
+      (skip-whitespace-forward-on-line gb)
       (def end (point gb))
       [start end]))
   (goto-char gb start)
