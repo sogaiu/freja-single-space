@@ -112,7 +112,3 @@
   (gb/insert-string-at-pos! gb start " ")
   (gb/move-n gb 1))
 
-(dh/set-key dh/gb-binds
-            [:alt :space]
-            (comp dh/reset-blink single-space))
-
